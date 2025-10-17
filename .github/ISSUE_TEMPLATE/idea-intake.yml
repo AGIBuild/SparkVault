@@ -1,0 +1,88 @@
+name: Idea Intake
+description: Submit a new idea to SparkVault.
+title: "[Idea] <concise title>"
+labels: ["status:draft"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for contributing. Provide clear, concise, evidence-backed info where possible.
+  - type: input
+    id: slug
+    attributes:
+      label: Slug
+      description: short-lowercase-hyphen form (used in filename)
+      placeholder: e.g. adaptive-scoring-agent
+    validations:
+      required: true
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+      description: What pain or systemic gap does this address and why now?
+    validations:
+      required: true
+  - type: textarea
+    id: insight
+    attributes:
+      label: Insight
+      description: Non-obvious angle / leverage point.
+  - type: textarea
+    id: concept
+    attributes:
+      label: Concept
+      description: Core mechanism, actors, usage flow (MVP narrative).
+    validations:
+      required: true
+  - type: textarea
+    id: impact
+    attributes:
+      label: Potential Impact
+      description: Beneficiaries; any quantitative hypothesis (optional).
+  - type: textarea
+    id: feasibility
+    attributes:
+      label: Feasibility Notes
+      description: Early thoughts on stack, dependencies, blockers, risks.
+  - type: textarea
+    id: related
+    attributes:
+      label: Related References
+      description: Links (research, datasets, regulations, comparable products).
+  - type: textarea
+    id: evolution
+    attributes:
+      label: Evolution Ideas
+      description: Possible sub-experiments / validation steps.
+  - type: dropdown
+    id: tags
+    attributes:
+      label: Tags
+      description: Select initial topical tags.
+      multiple: true
+      options:
+        - tool-dev
+        - civic-innovation
+        - ai-augment
+        - protocol
+        - speculative
+    validations:
+      required: false
+  - type: textarea
+    id: impact_hypothesis
+    attributes:
+      label: Impact Hypothesis
+      description: If X then Y improves by Z%.
+  - type: textarea
+    id: risks
+    attributes:
+      label: Risk Flags
+      description: Known risks (legal, data, adoption, resourcing, etc.).
+  - type: checkboxes
+    id: confirmations
+    attributes:
+      label: Submission Checklist
+      options:
+        - label: I confirm this is not a duplicate idea to my knowledge.
+        - label: I distinguished facts vs assumptions.
+        - label: I agree to the Code of Conduct.

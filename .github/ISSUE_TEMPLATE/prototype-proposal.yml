@@ -1,0 +1,74 @@
+name: Prototype Proposal
+description: Propose moving an idea into a minimal prototype.
+title: "[Prototype] <idea slug>"
+labels: ["status:ready-for-prototype"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Link the source idea and outline an MVE (Minimum Viable Experiment).
+  - type: input
+    id: idea_slug
+    attributes:
+      label: Source Idea Slug
+      description: Slug of the idea you are proposing to prototype.
+      placeholder: adaptive-scoring-agent
+    validations:
+      required: true
+  - type: input
+    id: idea_issue
+    attributes:
+      label: Source Idea Issue Number
+      description: Reference the existing idea issue.
+      placeholder: 42
+    validations:
+      required: true
+  - type: textarea
+    id: objective
+    attributes:
+      label: Objective
+      description: What question or hypothesis will the prototype validate?
+    validations:
+      required: true
+  - type: textarea
+    id: scope
+    attributes:
+      label: Scope / MVP
+      description: Minimal features, actors, data flows.
+    validations:
+      required: true
+  - type: textarea
+    id: success
+    attributes:
+      label: Success Criteria / Metrics
+      description: Clear measurable or falsifiable indicators.
+    validations:
+      required: true
+  - type: textarea
+    id: resources
+    attributes:
+      label: Resource Needs
+      description: People, tooling, datasets, infra.
+  - type: textarea
+    id: timeline
+    attributes:
+      label: Timebox
+      description: Proposed duration (e.g. 2 weeks).
+  - type: textarea
+    id: risks
+    attributes:
+      label: Key Risks & Mitigations
+      description: Foreseeable blockers + mitigation ideas.
+  - type: textarea
+    id: followup
+    attributes:
+      label: Next Step After Prototype
+      description: What decision will be made if success criteria are met/not met?
+  - type: checkboxes
+    id: confirmations
+    attributes:
+      label: Checklist
+      options:
+        - label: Source idea has status ready-for-prototype.
+        - label: Success metrics are specific.
+        - label: Risks have at least one mitigation.
