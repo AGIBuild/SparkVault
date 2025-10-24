@@ -1,70 +1,66 @@
 ---
-title: "Cursor Voice Assistant"
+title: "Cursor 语音助手"
 slug: "cursor-voice-assistant"
 date: 2025-10-17
 author: ""
 status: draft
 tags: [tool-dev, ai-augment]
-impact_hypothesis: "If developers can converse hands-free with an agent in Cursor, task iteration speed for code exploration improves by >25%."
+impact_hypothesis: "免打字语音交互将使探索/重构迭代速度提升 >25%."
 scores: {impact: null, feasibility: null, novelty: null, urgency: null, alignment: null}
 risk_flags: ["accuracy", "privacy", "latency"]
-next_step: "Map core interaction flows & assess existing speech APIs."
-issue: null
+next_step: "整理核心交互流 & 对比语音识别方案"
+issue: 1
 ---
 
-# Cursor Voice Assistant
-Add a speech-driven conversational layer to Cursor so users interact with in-editor agents using natural spoken language.
+# Cursor 语音助手
+为 Cursor 增加语音交互层，通过口语快速向内置智能体发指令或需求。
 
-## Problem
-Developers often context-switch between typing, reading code, and conceptual planning. Manual prompt typing slows exploration, especially when hands are busy (pairing, hardware tinkering) or when rapid iterative clarification is needed. Accessibility users also benefit from low-friction verbal interaction.
+## 问题
+频繁在“想法 → 打字”之间切换降低探索速度；手忙（配合调试/硬件操作）或需连续澄清时尤甚。无障碍用户也受益于低摩擦语音。
 
-## Insight
-Real-time, low-latency speech-to-action loops can compress the prompt->response cycle and surface clarifying follow-ups immediately. Voice modality can capture intent faster ("refactor just the sorting part to use a min-heap") than typed multi-sentence prompts.
+## 洞察
+低延迟的“语音→意图→响应”能压缩交互循环；口语更快表达局部意图（如“只重构排序部分”）而无需长文本提示。
 
-## Concept
-Integrate a lightweight voice assistant pane / overlay in Cursor:
-- Push-to-talk (keyboard shortcut or hold key) starts capture.
-- Streaming ASR converts speech to structured intent + raw transcript.
-- NLU layer post-processes transcript: extract commands ("open file", "explain function", "generate tests").
-- Agent responds via text in editor + optional TTS playback.
-- Follow-up chaining: system keeps short-term conversational state per file buffer.
-- Privacy mode: local/offline model option (fallback to cloud if allowed).
+## 概念
+轻量浮层：按住快捷键→采集音频→流式识别→意图解析（命令/自由文本）→ 生成响应（文本 + 可选语音播放）。保留短期上下文。提供本地隐私模式。
 
-### Interaction Flows (draft)
-1. Quick Refactor: User presses shortcut, says "extract the loop in processData into a helper" → transcript → agent suggests diff.
-2. Code Explanation: "Explain the error handling in this file" → identifies current file context → summary.
-3. Generation: "Write unit tests for the parseHeader function" → agent generates test skeletons.
-4. Navigation: "Open the config file" → triggers file search.
+### 交互示例（草案）
+1. 重构："把 processData 里的循环提取成函数" → 转录 → 给出 diff。
+2. 解释："解释当前文件的错误处理" → 定位文件 → 摘要。
+3. 生成："为 parseHeader 写单测" → 产出测试骨架。
+4. 导航："打开配置文件" → 文件搜索。
 
-## Potential Impact
-- Productivity: Faster prompt cycles; reduce ~30–50% keystrokes for exploratory/refactor tasks.
-- Accessibility: Empower voice-reliant users to engage deeper with AI-assisted coding.
-- Adoption: Differentiates Cursor with multimodal augmentation.
-- Knowledge capture: Spoken clarifications could be logged (opt-in) to improve future suggestions.
+## 潜在影响
+- 生产率：探索/重构输入按键减少 30–50%。
+- 无障碍：语音依赖用户更易使用智能体。
+- 竞争力：多模态特性提升产品差异化。
+- 知识沉淀：可选记录澄清语句优化后续建议。
 
-## Feasibility Notes
-- ASR options: OpenAI Realtime, Whisper local, Vosk, Coqui STT.
-- Latency target: <800ms partial transcript display.
-- TTS: Edge / ElevenLabs / local models if needed.
-- Complexity: Need command grammar or lightweight intent classifier (prompt-based or small finetuned model).
-- Risks: Mis-recognition leads to wrong code changes; mitigate via confirmation step for write operations.
-- Dependencies: Editor integration API, microphone access, streaming websockets.
+## 可行性
+- ASR：OpenAI Realtime / 本地 Whisper / Vosk / Coqui。
+- 延迟目标：首个部分转录 <800ms。
+- TTS：后期接入（Edge / Piper）。
+- 意图：正则 + 小型分类（prompt few-shot）。
+- 风险：误识别导致错误修改 → 强制确认 diff。
+- 依赖：编辑器 API、麦克风、WebSocket。
 
-## Related
-- VSCode voice extensions (precedent for commands)
-- GitHub Copilot chat interactions
-- Apple accessibility voice control patterns
-- Research: multimodal developer productivity, cognitive load reduction
+## 相关
+- VSCode 语音扩展
+- Copilot Chat 交互模式
+- 系统辅助功能语音控制案例
+- 多模态开发效率研究
 
-## Evolution Ideas
-- Phase 1: Passive transcript + manual "Send to agent" button.
-- Phase 2: Streaming intent classification and immediate agent response.
-- Phase 3: Inline diff preview with voice confirmation "apply".
-- Phase 4: Context summarization of a file via "summarize this file".
-- Phase 5: Multi-agent arbitration: "compare two implementation styles".
+## 演化
+- 阶段1：仅转录 + 手动发送。
+- 阶段2：流式意图 + 自动响应。
+- 阶段3：diff 预览 + 语音确认应用。
+- 阶段4：文件语音总结。
+- 阶段5：多智能体对比。
 
-## Status
-Current status: draft.
+## 状态
+当前：draft。
 
-## Revision Notes
-- 2025-10-17: initial capture.
+## 修订
+- 2025-10-17: 初始。
+- 2025-10-24: 中文化精简。
+- 2025-10-17: linked to Issue #1.
