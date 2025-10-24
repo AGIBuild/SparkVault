@@ -1,1 +1,34 @@
-Problem\n复杂长链任务需手动在多个模型/工具间切换，效率低、成本高、结果不稳定。\n\nInsight\n多角色协作 + 模型分层路由（本地处理高频低价值，付费模型用于关键和评审）可降低成本并提升一致性。\n\nConcept\n角色: Planner / Worker / Reviewer / Optimizer / Guardrail。\n任务图: 节点=目标+约束+验收。\n路由: 规则或学习策略决定使用本地 vs 云端模型。\n质量回路: Reviewer 结构化验证失败回滚。\n状态总线: 向量索引+KV供检索。\n人类介入: 仅在分叉/失败重试。\n\nImpact\n减少昂贵模型调用比例；提高长链任务成功率；形成可复用多 Agent 框架。\n\nFeasibility\n参考 AutoGen / LangChain / 多 Agent 研究；初期手动规则；后续强化学习。风险: 协调开销/幻觉放大/评审成本。\n\nEvolution\nP1: 静态角色 + 手写路由\nP2: 模板输出 + 自动验证器\nP3: 动态预算分配\nP4: 学习型路由\nP5: 插件化角色生态\n\nRisks\ncoordination, hallucination, cost\n\nNext Step\n梳理典型场景与角色分配示例。\n\nSource File: ideas/2025-10-24-a2a-agent-design.md
+## 问题
+复杂长链任务需手动在多个模型 / 工具间切换，效率低、成本高、结果不稳定。
+
+## 洞察
+多角色协作 + 模型分层路由（本地处理高频低价值，付费模型用于关键和评审）可降低成本并提升一致性。
+
+## 概念
+角色：Planner / Worker / Reviewer / Optimizer / Guardrail。
+任务图：节点 = 目标 + 约束 + 验收。
+路由：规则或学习策略决定使用本地 vs 云端模型。
+质量回路：Reviewer 结构化验证失败回滚。
+状态总线：向量索引 + KV 检索。
+人类介入：仅在分叉 / 失败重试。
+
+## 影响
+减少昂贵模型调用比例；提高长链任务成功率；形成可复用多 Agent 框架。
+
+## 可行性
+参考 AutoGen / LangChain / 多 Agent 研究；初期手动规则；后续强化学习。风险：协调开销 / 幻觉放大 / 评审成本。
+
+## 演化
+- P1: 静态角色 + 手写路由
+- P2: 模板输出 + 自动验证器
+- P3: 动态预算分配
+- P4: 学习型路由
+- P5: 插件化角色生态
+
+## 风险
+`coordination`, `hallucination`, `cost`
+
+## 下一步
+梳理典型场景与角色分配示例。
+
+来源文件: `ideas/2025-10-24-a2a-agent-design.md`
