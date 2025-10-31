@@ -3,7 +3,7 @@ title: "Cursor 语音助手"
 slug: "cursor-voice-assistant"
 date: 2025-10-17
 author: ""
-status: draft
+status: archived
 tags: [tool-dev, ai-augment]
 impact_hypothesis: "免打字语音交互将使探索/重构迭代速度提升 >25%."
 scores: {impact: null, feasibility: null, novelty: null, urgency: null, alignment: null}
@@ -63,4 +63,5 @@ issue: 1
 ## 修订
 - 2025-10-17: 初始。
 - 2025-10-24: 中文化精简。
+- 2025-10-31: 归档，Cursor 新版本已内置语音助手功能。
 - 2025-10-17: linked to Issue #1.
