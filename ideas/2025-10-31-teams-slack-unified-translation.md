@@ -7,8 +7,8 @@ status: draft
 tags: [tool-dev, civic-innovation]
 impact_hypothesis: "统一跨 IM 平台翻译可覆盖 80%+ 企业协作场景，减少重复开发并提升 30%+ 跨语言沟通效率。"
 scores: {impact: null, feasibility: null, novelty: null, urgency: null, alignment: null}
-risk_flags: ["platform-api-diff", "privacy", "maintenance"]
-next_step: "对比 Slack / Teams 输入拦截机制与共用插件架构可行性。"
+risk_flags: ["platform-api-diff", "model-size", "maintenance"]
+next_step: "对比 Slack / Teams DOM 结构 + 调研轻量翻译模型浏览器端共用方案。"
 issue: null
 ---
 
@@ -24,16 +24,20 @@ Slack 与 Teams 输入框交互模式相似（消息输入 → 发送按钮）�
 ## 概念
 架构分层：
 - **核心层**（平台无关）：
-  - 翻译引擎适配（DeepL / Azure / 本地模型）。
+  - **轻量级翻译模型**：NLLB-200-distilled / Opus-MT / 本地小模型（200MB-1GB）。
+  - 翻译定制化：
+    - **语气**：正式 / 友好 / 幽默风格。
+    - **丰富度**：简洁 / 标准 / 详细。
+    - **术语表**：产品名称、技术术语保持原文或映射。
   - 语言检测与目标语言配置。
-  - 翻译缓存与术语表。
-  - 模式切换（纯替换 / 双语 / 预览确认）。
+  - 翻译缓存（避免重复翻译）。
+  - 模式：纯替换（默认）。
 - **适配层**（平台特定）：
   - Slack: 浏览器扩展拦截 DOM 输入框 / Electron 客户端 Hook。
   - Teams: 浏览器扩展 / Teams App（受限于官方 API）。
   - 统一接口：`getInputText()`, `setOutputText()`, `onSendBefore()`.
 - **配置共享**：
-  - 云端或本地同步用户偏好（源语言、目标语言、翻译服务、快捷键）。
+  - 云端或本地同步用户偏好（源语言、目标语言、翻译质量预设、语气/丰富度）。
 
 ### 实现策略
 1. **浏览器扩展优先**（Chrome/Edge/Firefox）：
@@ -48,17 +52,25 @@ Slack 与 Teams 输入框交互模式相似（消息输入 → 发送按钮）�
 - 覆盖主流企业 IM 平台，降低用户切换成本。
 - 减少 50%+ 重复开发（核心逻辑复用）。
 - 统一用户体验与配置管理。
+- 智能推荐回复可提升 50%+ 响应速度，且跨平台共用知识库降低维护成本。
 
 ## 可行性
 - **技术**：浏览器扩展可访问 Slack / Teams Web 版 DOM；桌面版需额外 Hook 机制。
 - **API 差异**：
   - Slack：无官方输入拦截 API，需扩展或 Hook。
   - Teams：Teams App 受限，扩展更灵活。
-- **翻译**：DeepL / Azure 统一接口；本地模型（MarianMT）可选。
+- **翻译模型部署**：
+  - 本地轻量模型（200MB-1GB）：WASM / ONNX Runtime 浏览器端运行。
+  - 远程推理服务：用户自建 / 插件提供的托管端点。
+  - 延迟 <300ms，成本极低。
+- **定制化实现**：
+  - 语气/丰富度通过 prompt 模板或模型微调实现。
+  - 术语表通过预处理替换或后处理校正。
+- **隐私**：优先本地模型，消息内容不离开用户设备。
 - **风险**：
   - 平台更新导致 DOM 结构变化。
-  - 隐私：翻译数据是否上云需明确策略。
   - 维护成本：两平台演进速度不同。
+  - 轻量模型质量 vs 通用大模型需权衡（可提供质量档位选择）。
 
 ## 相关
 - Slack 翻译 bot（被动触发）。
@@ -66,11 +78,15 @@ Slack 与 Teams 输入框交互模式相似（消息输入 → 发送按钮）�
 - 浏览器通用翻译扩展（Grammarly 模式）。
 
 ## 演化
-- 阶段1：浏览器扩展支持 Slack + Teams Web 版 + DeepL API。
-- 阶段2：桌面客户端支持（Electron Hook）。
-- 阶段3：本地模型选项 + 术语表自定义。
-- 阶段4：扩展至 Discord / Telegram（验证架构通用性）。
-- 阶段5：团队协作翻译记忆库 + AI 优化建议。
+- 阶段1：浏览器扩展支持 Slack + Teams Web 版 + 轻量本地模型（NLLB-distilled）。
+- 阶段2：语气/丰富度定制 + 术语表支持。
+- 阶段3：桌面客户端支持（Electron Hook）。
+- 阶段4：**智能推荐回复**：
+  - 分析对话上下文（近期消息 + 频道主题）+ 用户知识库（常用回复 / 团队话术）。
+  - 生成 3-5 条推荐回复（目标语言），用户点选即可发送。
+  - 跨平台共用推荐引擎，减少重复训练成本。
+- 阶段5：扩展至 Discord / Telegram（验证架构通用性）。
+- 阶段6：团队协作翻译记忆库 + 质量反馈循环。
 
 ## 统一架构可行性评估
 | 维度 | Slack | Teams | 共用可行性 |
